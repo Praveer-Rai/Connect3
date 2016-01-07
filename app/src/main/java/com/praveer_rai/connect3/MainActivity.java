@@ -8,8 +8,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
+
+    int activePlayer = 0; // yellow
+
+    public void dropIn(View view){
+        ImageView counter = (ImageView)view;
+        counter.setTranslationY(-1000f);
+        if(activePlayer == 0) {
+            counter.setImageResource(R.drawable.yellow);
+            activePlayer = 1;
+        } else {
+            counter.setImageResource(R.drawable.red);
+            activePlayer = 0;
+        }
+        counter.animate().translationYBy(1000f).rotation(720f).setDuration(600);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,15 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
