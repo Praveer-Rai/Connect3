@@ -5,10 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,32 +34,59 @@ public class MainActivity extends AppCompatActivity {
 
     public void dropIn(View view) {
 
-        ImageView currentBox = (ImageView) view;
+        ImageView currentDisk = (ImageView) view;
 
-        int currentBoxInt = Integer.parseInt(currentBox.getTag().toString());
+        int currentBoxInt = Integer.parseInt(currentDisk.getTag().toString());
 
         if (isGameActive && gameState[currentBoxInt] == 0) {
 
             gameState[currentBoxInt] = activePlayer;
 
-            currentBox.setTranslationY(-1000f);
+            //currentDisk.setTranslationY(-1000f);
 
             if (activePlayer == 1) {
-                currentBox.setImageResource(R.drawable.yellow);
+                currentDisk.setImageResource(R.drawable.yellow);
                 activePlayer = 2;
             } else {
-                currentBox.setImageResource(R.drawable.red);
+                currentDisk.setImageResource(R.drawable.red);
                 activePlayer = 1;
             }
 
-            currentBox.animate().translationYBy(1000f).rotation(720f).setDuration(600);
-        }
+            AnimationSet animSet = new AnimationSet(true);
 
-        checkIfWin();
+
+            Animation translate = new TranslateAnimation(0,0,1000,0);
+            translate.setDuration(900);
+            Animation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+            rotate.setDuration(900);
+
+            animSet.addAnimation(translate);
+            animSet.addAnimation(rotate);
+
+            Animation.AnimationListener al = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    checkIfWinOrDraw();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            };
+
+            animSet.setAnimationListener(al);
+            currentDisk.startAnimation(animSet);
+
+            //currentDisk.animate().translationYBy(1000f).rotation(720f).setDuration(600);
+        }
 
     }
 
-    public void checkIfWin() {
+    public void checkIfWinOrDraw() {
         for (int[] wp : winningPositions) {
             // check if all positions are played
             if (gameState[wp[0]] != 0 && // no need to check all 3, it would be false anyway in next condition
@@ -75,6 +106,22 @@ public class MainActivity extends AppCompatActivity {
                 playAgain.setVisibility(View.VISIBLE);
                 isGameActive = false;
 
+            } else {
+                // check draw condition
+                boolean gameOver = true;
+                for (int i = 1; i < gameState.length; i++) {
+                    if (gameState[i] == 0) {
+                        // still moves left
+                        gameOver = false;
+                        break;
+                    }
+                }
+
+                if (gameOver) {
+                    winMsg.setText("It is a draw!");
+                    playAgain.setVisibility(View.VISIBLE);
+                    isGameActive = false;
+                }
             }
         }
     }
@@ -100,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         winMsg = (TextView) findViewById(R.id.winnerMessage);
         playAgain = (LinearLayout) findViewById(R.id.playAgainLayout);
         gridLayout = (GridLayout) findViewById(R.id.gridLayout);
+
     }
 
     @Override
