@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     int[] gameState = new int[10]; // for readability 10 instead of 9
 
-    int[][] winningPositions = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 7}, {3, 6, 9}, {1, 5, 9}, {3, 5, 7},};
+    int[][] winningPositions = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9}, {1, 5, 9}, {3, 5, 7}};
 
     TextView winMsg = null;
     LinearLayout playAgain = null;
