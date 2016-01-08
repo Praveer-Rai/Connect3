@@ -1,11 +1,8 @@
 package com.praveer_rai.connect3;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             AnimationSet animSet = new AnimationSet(true);
 
 
-            Animation translate = new TranslateAnimation(0,0,1000,0);
+            Animation translate = new TranslateAnimation(0, 0, 1000, 0);
             translate.setDuration(900);
             Animation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
             rotate.setDuration(900);
